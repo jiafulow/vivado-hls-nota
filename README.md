@@ -10,23 +10,18 @@ The following tables and figures are taken from Xilinx official documentation:
 ## HLS Optimization Methodology
 
 <table>
-<tr>
-<td><img src="/images/ug1197-fig-4-5.png" alt="HLS Optimization Methodology"/></td>
-</tr>
+<tr><td><img src="/images/ug1197-fig-4-5.png" alt="HLS Optimization Methodology"/></td></tr>
 </table>
 
-(from UG1197 Figure 4-5)
+Source: UG1197 Figure 4-5
 
 ## Vivado HLS Design Flow
 
-
 <table>
-<tr>
-<td><img src="/images/ug902-fig-4.png" alt="Vivado HLS Design Flow"/></td>
-</tr>
+<tr><td><img src="/images/ug902-fig-4.png" alt="Vivado HLS Design Flow"/></td></tr>
 </table>
 
-(from UG902 Figure 4)
+Source: UG902 Figure 4
 
 ## Vivado HLS Pragmas By Type
 
@@ -76,22 +71,26 @@ The following tables and figures are taken from Xilinx official documentation:
 ## Vivado HLS Optimization Directives
 
 <table>
-<tr>
-<td><img src="/images/ug902-table-11.png" alt="Vivado HLS Optimization Directives"/></td>
-</tr>
+<tr><td><img src="/images/ug902-table-11.png" alt="Vivado HLS Optimization Directives"/></td></tr>
 </table>
 
-(from UG902 Table 11)
+Source: UG902 Table 11
+
+<table>
+<tr><td>Loop pipelining:<br /><img src="/images/sdaccel-fig-pipeline.png" alt="Loop pipelining"/></td></tr>
+<tr><td>Dataflow optimization:<br /><img src="/images/sdaccel-fig-dataflow.png" alt="Dataflow optimization"/></td></tr>
+<tr><td>Array partitioning:<br /><img src="/images/sdaccel-fig-array-partition.png" alt="Array partitioning"/></td></tr>
+</table>
+
+Source: [SDAccel Environment documentation](https://www.xilinx.com/html_docs/xilinx2019_1/sdaccel_doc/rjk1519742919747.html)
 
 ## Vivado HLS Configurations
 
 <table>
-<tr>
-<td><img src="/images/ug902-table-12.png" alt="Vivado HLS Configurations"/></td>
-</tr>
+<tr><td><img src="/images/ug902-table-12.png" alt="Vivado HLS Configurations"/></td></tr>
 </table>
 
-(from UG902 Table 12)
+Source: UG902 Table 12
 
 ## C++ Arbitrary Precision Integer Types
 
@@ -139,12 +138,10 @@ where `W` is the total number of bits, `I` is the number of integer bits, `W-I` 
 The DSP48E2 slice consists of a 27-bit pre-adder, 27 x 18 multiplier and a flexible 48-bit ALU that serves as a post-adder/subtracter, accumulator, or logic unit. It can be used to calculate P = (A + D) x B + C.
 
 <table>
-<tr>
-<td><img src="/images/ug579-fig-1-1.png" alt="DSP48E2 slice"/></td>
-</tr>
+<tr><td><img src="/images/ug579-fig-1-1.png" alt="DSP48E2 slice"/></td></tr>
 </table>
 
-(from UG579 Figure 1-1)
+Source: UG579 Figure 1-1
 
 The BRAM is a dual-port RAM module that can hold either 18K or 36K bits.
 
