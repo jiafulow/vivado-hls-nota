@@ -79,10 +79,11 @@ Source: UG902 Table 11
 <table>
 <tr><td>Loop pipelining:<br /><img src="/images/sdaccel-fig-pipeline.png" alt="Loop pipelining"/></td></tr>
 <tr><td>Dataflow optimization:<br /><img src="/images/sdaccel-fig-dataflow.png" alt="Dataflow optimization"/></td></tr>
+<tr><td>Array reshaping:<br /><img src="/images/sdaccel-fig-array-reshape.png" alt="Array reshaping"/></td></tr>
 <tr><td>Array partitioning:<br /><img src="/images/sdaccel-fig-array-partition.png" alt="Array partitioning"/></td></tr>
 </table>
 
-Source: [SDAccel Environment documentation](https://www.xilinx.com/html_docs/xilinx2019_1/sdaccel_doc/rjk1519742919747.html)
+Source: [SDAccel Development Environment Help](https://www.xilinx.com/html_docs/xilinx2019_1/sdaccel_doc/hls-pragmas-okr1504034364623.html)
 
 ## Vivado HLS Configurations
 
@@ -135,13 +136,46 @@ where `W` is the total number of bits, `I` is the number of integer bits, `W-I` 
 
 ## FPGA resources
 
-The DSP48E2 slice consists of a 27-bit pre-adder, 27 x 18 multiplier and a flexible 48-bit ALU that serves as a post-adder/subtracter, accumulator, or logic unit. It can be used to calculate P = (A + D) x B + C.
+### DSP Slice
 
 <table>
-<tr><td><img src="/images/ug579-fig-1-1.png" alt="DSP48E2 slice"/></td></tr>
+<tr><td><img src="/images/ug579-fig-1-1.png" alt="Basic DSP48E2 Functionality"/></td></tr>
 </table>
 
 Source: UG579 Figure 1-1
+
+<table>
+<tr><td><img src="/images/ug579-fig-2-1.png" alt="Detailed DSP48E2 Functionality"/></td></tr>
+</table>
+
+Source: UG579 Figure 2-1
+
+The DSP48E2 slice consists of a 27-bit pre-adder, a 27 x 18 multiplier, a second-stage adder/subtracter/logic unit, and a pattern detector. It produces a 48-bit output. If the multiplier is not used, the DSP slice can also be used as a full 48-bit adder/subtracter and AND/OR/NOT/NAND/NOR/XOR/XNOR logic unit. It also includes a pattern detector that provides support for convergent rounding, overflow/underflow, and counter auto-reset.
+
+The typical use of the slice is to calculate P = (D &pm; A) * B + C. If the multiplier is not used, A and B can be concatenated as A:B to calculate P = A:B + C. Multiple DSP slices can be cascaded to perform accumulation PCOUT = (D &pm; A) * B + PCIN.
+
+The A, B, C, D input ports have the following bit widths:
+
+|Port|Bit Width|Description
+|----|---------|-----------
+|A   |30       |A[26:0] is the A input of the multiplier or the pre-adder. A[29:0] are the upper bits of the A:B concatenated input.
+|B   |18       |The B input of the multiplier. B[17:0] are the lower bits of the A:B concatenated input.
+|C   |48       |The C input to the second-stage adder/subtracter, pattern detector, or logic function.
+|D   |27       |The D input to the pre-adder or alternative input to the multiplier.
+
+The P. PATTERNDETECT, and PATTERNBDETECT output ports have the following bit widths:
+
+|Port|Bit Width|Description
+|----|---------|-----------
+|P   |48       |The P output from the second-stage adder/subtracter or logic function.
+|PATTERNBDETECT|1|Match indicator between P[47:0] and the complement of the 48-bit pattern.
+|PATTERNDETECT|1|Match indicator between P[47:0] and the 48-bit pattern.
+
+The DSP slices in the same column can be cascaded to form accumulators, adders, counters, and other more sophisticated operations. The ability is provided by the cascade input ports (ACIN, BCIN, MULTSIGNIN, CARRYCASCIN, and PCIN) and the cascade output ports (ACOUT, BCOUT, MULTSIGNOUT, CARRYCASCOUT, and PCOUT).
+
+Note that Virtex-7 FPGAs have DSP48E1 whereas Virtex Ultrascale FPGAs have DSP48E2.
+
+### Block RAM
 
 The BRAM is a dual-port RAM module that can hold either 18K or 36K bits.
 
@@ -149,4 +183,5 @@ The BRAM is a dual-port RAM module that can hold either 18K or 36K bits.
 
 - [Xilinx/HLS-Tiny-Tutorials](https://github.com/Xilinx/HLS-Tiny-Tutorials)
 - [Xilinx/Vitis_Accel_Examples](https://github.com/Xilinx/Vitis_Accel_Examples)
+- [Xilinx/Vitis-Tutorials](https://github.com/Xilinx/Vitis-Tutorials)
 - [Xilinx/finn-hlslib](https://github.com/Xilinx/finn-hlslib)
