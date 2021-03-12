@@ -1,6 +1,8 @@
 # vivado-hls-nota
 
 The following tables and figures are taken from Xilinx official documentation:
+- [UG479 7 Series DSP48E1 Slice (v1.10)](https://www.xilinx.com/support/documentation/user_guides/ug479_7Series_DSP48E1.pdf)
+- [UG573 UltraScale Architecture Memory Resources (v1.12)](https://www.xilinx.com/support/documentation/user_guides/ug573-ultrascale-memory-resources.pdf)
 - [UG579 UltraScale Architecture DSP Slice (v1.10)](https://www.xilinx.com/support/documentation/user_guides/ug579-ultrascale-dsp.pdf)
 - [UG902 Vivado Design Suite User Guide: High-Level Synthesis (v2020.1)](https://www.xilinx.com/support/documentation/sw_manuals/xilinx2020_1/ug902-vivado-high-level-synthesis.pdf)
 - [UG998 Introduction to FPGA Design with Vivado High-Level Synthesis (v1.1)](https://www.xilinx.com/support/documentation/sw_manuals/ug998-vivado-intro-fpga-design-hls.pdf)
@@ -134,6 +136,18 @@ where `W` is the total number of bits, `I` is the number of integer bits, `W-I` 
 <tr><td>N</td><td colspan="3">The number of saturation bits used in wrap around overflow modes. The default value is zero.</td></tr>
 </table>
 
+## Vivado HLS limitations
+
+- For C and C++ designs only a single clock is supported. The same clock is applied to all functions in the design.
+
+## Vivado HLS examples
+
+- [Xilinx/HLS-Tiny-Tutorials](https://github.com/Xilinx/HLS-Tiny-Tutorials)
+- [Xilinx/Vitis_Accel_Examples](https://github.com/Xilinx/Vitis_Accel_Examples)
+- [Xilinx/Vitis-Tutorials](https://github.com/Xilinx/Vitis-Tutorials)
+- [Xilinx/finn-hlslib](https://github.com/Xilinx/finn-hlslib)
+
+
 ## FPGA resources
 
 ### DSP Slice
@@ -173,15 +187,38 @@ The P. PATTERNDETECT, and PATTERNBDETECT output ports have the following bit wid
 
 The DSP slices in the same column can be cascaded to form accumulators, adders, counters, and other more sophisticated operations. The ability is provided by the cascade input ports (ACIN, BCIN, MULTSIGNIN, CARRYCASCIN, and PCIN) and the cascade output ports (ACOUT, BCOUT, MULTSIGNOUT, CARRYCASCOUT, and PCOUT).
 
-Note that Virtex-7 FPGAs have DSP48E1 whereas Virtex Ultrascale FPGAs have DSP48E2.
+Number of DSP slices on Xilinx FPGAs:
+
+Device                   | # of DSPs
+-------------------------|---------:
+Kintex-7 325T            |       840
+Virtex-7 690T            |     3,600
+Kintex UltraScale KU115  |     5,520
+Virtex UltraScale+ VU9P  |     6,840
+Virtex UltraScale+ VU13P |    12,288
+
+Note that Kintex-7 and Virtex-7 FPGAs have DSP48E1 whereas Virtex Ultrascale+ FPGAs have DSP48E2.
 
 ### Block RAM
 
 The BRAM is a dual-port RAM module that can hold either 18K or 36K bits.
 
-## Xilinx HLS examples
+## FPGA performance metrics
 
-- [Xilinx/HLS-Tiny-Tutorials](https://github.com/Xilinx/HLS-Tiny-Tutorials)
-- [Xilinx/Vitis_Accel_Examples](https://github.com/Xilinx/Vitis_Accel_Examples)
-- [Xilinx/Vitis-Tutorials](https://github.com/Xilinx/Vitis-Tutorials)
-- [Xilinx/finn-hlslib](https://github.com/Xilinx/finn-hlslib)
+Area
+: Amount of hardware resources required to implement the design based on the resources available in the FPGA, including look-up tables (LUTs), registers, block RAMs, and DSP48s.
+
+Latency
+: Number of clock cycles required for the function to compute all output values.
+
+Initiation interval (II)
+: Number of clock cycles before the function can accept new input data.
+
+Loop iteration latency
+: Number of clock cycles it takes to complete one iteration of the loop.
+
+Loop initiation interval
+: Number of clock cycles before the next iteration of the loop starts to process data.
+
+Loop latency
+: Number of cycles to execute all iterations of the loop.
