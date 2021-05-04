@@ -1,9 +1,14 @@
 # vivado-hls-nota
 
 The following tables and figures are taken from Xilinx official documentation:
+- [UG473 7 Series FPGAs Memory Resources (v1.14)](https://www.xilinx.com/support/documentation/user_guides/ug473_7Series_Memory_Resources.pdf)
+- [UG474 7 Series FPGAs Configurable Logic Block (v1.8)](https://www.xilinx.com/support/documentation/user_guides/ug474_7Series_CLB.pdf)
 - [UG479 7 Series DSP48E1 Slice (v1.10)](https://www.xilinx.com/support/documentation/user_guides/ug479_7Series_DSP48E1.pdf)
 - [UG573 UltraScale Architecture Memory Resources (v1.12)](https://www.xilinx.com/support/documentation/user_guides/ug573-ultrascale-memory-resources.pdf)
+- [UG574 UltraScale Architecture Configurable Logic Block (v1.5)](https://www.xilinx.com/support/documentation/user_guides/ug574-ultrascale-clb.pdf)
 - [UG579 UltraScale Architecture DSP Slice (v1.10)](https://www.xilinx.com/support/documentation/user_guides/ug579-ultrascale-dsp.pdf)
+- [UG871 Vivado Design Suite Tutorial: High-Level Synthesis(v2020.1)](https://www.xilinx.com/support/documentation/sw_manuals/xilinx2020_1/ug871-vivado-high-level-synthesis-tutorial.pdf)
+- [UG872 Large FPGA Methodology Guide (v14.3)](https://www.xilinx.com/support/documentation/sw_manuals/xilinx14_7/ug872_largefpga.pdf)
 - [UG902 Vivado Design Suite User Guide: High-Level Synthesis (v2020.1)](https://www.xilinx.com/support/documentation/sw_manuals/xilinx2020_1/ug902-vivado-high-level-synthesis.pdf)
 - [UG998 Introduction to FPGA Design with Vivado High-Level Synthesis (v1.1)](https://www.xilinx.com/support/documentation/sw_manuals/ug998-vivado-intro-fpga-design-hls.pdf)
 - [UG1197 UltraFast Vivado HLS Methodology Guide (v2020.1)](https://www.xilinx.com/support/documentation/sw_manuals/ug1197-vivado-high-level-productivity.pdf)
@@ -139,6 +144,7 @@ where `W` is the total number of bits, `I` is the number of integer bits, `W-I` 
 ## Vivado HLS limitations
 
 - For C and C++ designs only a single clock is supported. The same clock is applied to all functions in the design.
+- When using Stacked Silicon Interconnect (SSI) technology devices, it is important to ensure that the logic created by Vivado HLS fits within a single Super Logic Region (SLR).
 
 ## Vivado HLS examples
 
@@ -149,6 +155,13 @@ where `W` is the total number of bits, `I` is the number of integer bits, `W-I` 
 
 
 ## FPGA resources
+
+### Look Up Table (LUT)
+
+The LUTs can be configured as a 6-input LUT with one output or two 5-input LUTs with separate outputs but common addresses or logic inputs.
+Eight 6-input LUTs and their sixteen storage elements, as well as the multiplexers and arithmetic carry logic, form a slice.
+
+### Flip Flop (FF)
 
 ### DSP Slice
 
@@ -163,6 +176,12 @@ Source: UG579 Figure 1-1
 </table>
 
 Source: UG579 Figure 2-1
+
+<table>
+<tr><td><img src="/images/ug579-fig-3-1.png" alt="DSP48E2 Slice Primitive"/></td></tr>
+</table>
+
+Source: UG579 Figure 3-1
 
 The DSP48E2 slice consists of a 27-bit pre-adder, a 27 x 18 multiplier, a second-stage adder/subtracter/logic unit, and a pattern detector. It produces a 48-bit output. If the multiplier is not used, the DSP slice can also be used as a full 48-bit adder/subtracter and AND/OR/NOT/NAND/NOR/XOR/XNOR logic unit. It also includes a pattern detector that provides support for convergent rounding, overflow/underflow, and counter auto-reset.
 
@@ -185,7 +204,7 @@ The P. PATTERNDETECT, and PATTERNBDETECT output ports have the following bit wid
 |PATTERNBDETECT|1|Match indicator between P[47:0] and the complement of the 48-bit pattern.
 |PATTERNDETECT|1|Match indicator between P[47:0] and the 48-bit pattern.
 
-The DSP slices in the same column can be cascaded to form accumulators, adders, counters, and other more sophisticated operations. The ability is provided by the cascade input ports (ACIN, BCIN, MULTSIGNIN, CARRYCASCIN, and PCIN) and the cascade output ports (ACOUT, BCOUT, MULTSIGNOUT, CARRYCASCOUT, and PCOUT).
+The DSP slices in the same column can be cascaded to form accumulators, adders, counters, and other more sophisticated operations. The ability is provided by the cascade input ports (ACIN, BCIN, PCIN, CARRYCASCIN, and MULTSIGNIN) and the cascade output ports (ACOUT, BCOUT, PCOUT, CARRYCASCOUT, and MULTSIGNOUT).
 
 Number of DSP slices on Xilinx FPGAs:
 
@@ -201,7 +220,20 @@ Note that Kintex-7 and Virtex-7 FPGAs have DSP48E1 whereas Virtex Ultrascale+ FP
 
 ### Block RAM
 
-The BRAM is a dual-port RAM module that can hold either 18K or 36K bits.
+HLS considers one block RAM to be 18K bits. A block RAM has two ports which can each be 1, 2, 4, 9, or 18 bits wide (with depths of 16K, 8K, 4K, 2K, and 1K respectively).
+
+### Ultra RAM
+
+Each UltraRAM stores 4096\*72 bits, which is 16 times the size of a block RAM. The port width is always 72 bits.
+
+## FPGA design considerations
+
+- Resource utilization
+- Design performance
+- Power consumption
+- Software runtime
+- Debugging capability
+- Portability
 
 ## FPGA performance metrics
 
